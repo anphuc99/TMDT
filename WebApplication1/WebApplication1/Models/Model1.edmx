@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DocGiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="NoTienPhatDG">
+          <Key>
+            <PropertyRef Name="MaDG" />
+          </Key>
+          <Property Name="MaDG" Type="int" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NgaySinh" Type="datetime" />
+          <Property Name="TienNo" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DocGia.dbo.TG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TG">
+          <Key>
+            <PropertyRef Name="TG" />
+          </Key>
+          <Property Name="TG" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_NhomTG_TaiKhoan">
+          <End Role="NoTienPhatDG" Type="Self.NoTienPhatDG" Multiplicity="1" />
+          <End Role="TG" Type="Self.TG" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="NoTienPhatDG">
+              <PropertyRef Name="MaDG" />
+            </Principal>
+            <Dependent Role="TG">
+              <PropertyRef Name="TG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DocGiaModelStoreContainer">
+          <EntitySet Name="NoTienPhatDG" EntityType="Self.NoTienPhatDG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TG" EntityType="Self.TG" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TG].[TG] AS [TG]
+    FROM [dbo].[TG] AS [TG]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_NhomTG_TaiKhoan" Association="Self.FK_NhomTG_TaiKhoan">
+            <End Role="NoTienPhatDG" EntitySet="NoTienPhatDG" />
+            <End Role="TG" EntitySet="TG" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DocGiaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="NoTienPhatDG">
+          <Key>
+            <PropertyRef Name="MaDG" />
+          </Key>
+          <Property Name="MaDG" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Precision="3" />
+          <Property Name="TienNo" Type="Int32" />
+          <NavigationProperty Name="TG" Relationship="Self.FK_NhomTG_TaiKhoan" FromRole="NoTienPhatDG" ToRole="TG" />
+        </EntityType>
+        <EntityType Name="TG">
+          <Key>
+            <PropertyRef Name="TG1" />
+          </Key>
+          <Property Name="TG1" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NoTienPhatDG" Relationship="Self.FK_NhomTG_TaiKhoan" FromRole="TG" ToRole="NoTienPhatDG" />
+        </EntityType>
+        <Association Name="FK_NhomTG_TaiKhoan">
+          <End Role="NoTienPhatDG" Type="Self.NoTienPhatDG" Multiplicity="1" />
+          <End Role="TG" Type="Self.TG" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="NoTienPhatDG">
+              <PropertyRef Name="MaDG" />
+            </Principal>
+            <Dependent Role="TG">
+              <PropertyRef Name="TG1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DocGiaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="NoTienPhatDGs" EntityType="Self.NoTienPhatDG" />
+          <EntitySet Name="TGs" EntityType="Self.TG" />
+          <AssociationSet Name="FK_NhomTG_TaiKhoan" Association="Self.FK_NhomTG_TaiKhoan">
+            <End Role="NoTienPhatDG" EntitySet="NoTienPhatDGs" />
+            <End Role="TG" EntitySet="TGs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DocGiaModelStoreContainer" CdmEntityContainer="DocGiaEntities">
+          <EntitySetMapping Name="NoTienPhatDGs">
+            <EntityTypeMapping TypeName="DocGiaModel.NoTienPhatDG">
+              <MappingFragment StoreEntitySet="NoTienPhatDG">
+                <ScalarProperty Name="MaDG" ColumnName="MaDG" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="TienNo" ColumnName="TienNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TGs">
+            <EntityTypeMapping TypeName="DocGiaModel.TG">
+              <MappingFragment StoreEntitySet="TG">
+                <ScalarProperty Name="TG1" ColumnName="TG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
